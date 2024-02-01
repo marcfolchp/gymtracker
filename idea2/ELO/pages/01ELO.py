@@ -6,6 +6,20 @@ import shutil
 
 import streamlit.components.v1 as components
 
+st.set_page_config(
+    page_title="Your Streamlit App",
+    page_icon=":rocket:",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': None,
+        'Report a Bug': None,
+        'About': "This is a Streamlit app."
+    },
+    theme="primaryColor='#2962ff', backgroundColor='#131722', secondaryBackgroundColor='#0c0e15', textColor='#f6f6f6'"
+)
+
+
 # with open('style.css') as f:
 #     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html = True)
 
