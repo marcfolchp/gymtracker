@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from pymongo import MongoClient
 
-with open('../style.css') as f:
+with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html = True)
 
 connection_string = "mongodb+srv://marcfolchpomares:AstonMartin1@mycluster.e19nlo1.mongodb.net/?retryWrites=true&w=majority"
