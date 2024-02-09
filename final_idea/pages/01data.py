@@ -32,6 +32,13 @@ latest_index = grouped.groupby('Bodypart')['Date'].idxmax()
 latest_scores = grouped.loc[latest_index]
 latest_score = latest_scores[latest_scores["Bodypart"]==selected_bodypart]["Score"]
 
+today_date = pd.to_datetime('today').normalize()
+past = df[df['Date'] < today_date]
+grouped = past.groupby(["Bodypart", pd.to_datetime(past['Date']).dt.date]).agg({'Score': 'mean'}).astype(int).reset_index()
+latest_index = grouped.groupby('Bodypart')['Date'].idxmax()
+latest_scores = grouped.loc[latest_index]
+past_score = latest_scores[latest_scores["Bodypart"]==selected_bodypart]["Score"]
+
 style_html = f'<style>'
 style_html += f'@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");'
 style_html += f'.price_details {{'
@@ -58,8 +65,10 @@ style_html += f'</style>'
 html_content = f'<p class="btc_text">ELO<br></p>'
 html_content += f'<p class="price_details">{latest_score.item()}</p>'
 
+html_content2 = f'<p class="price_details">{past_score.item()}</p>'
+
 # Combine style and HTML content
-full_html = style_html + html_content
+full_html = style_html + html_content + html_content2
 
 # Display the HTML using st.markdown
 st.markdown(full_html, unsafe_allow_html=True)

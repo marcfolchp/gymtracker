@@ -14,6 +14,7 @@ def calculator (weight, repetitions):
 cursor = collection.find({})
 data = list(cursor)
 df = pd.DataFrame(data)
+df['Date'] = pd.to_datetime(df['Date'])
 
 bodypart = df["Bodypart"].unique()
 selected_bodypart = st.selectbox('Bodypart:', bodypart)
@@ -37,12 +38,16 @@ new_row_data = {"Date":current_datetime, "Bodypart":selected_bodypart, "Exercise
 if st.button("Insert"):
     collection.insert_one(new_row_data)
 
-last_exercise = df[(df["Exercise"]==selected_exercise)]
+today_date = pd.to_datetime('today').normalize()
+df2 = df[df['Date'] < today_date]
 
+# Assuming 'selected_exercise' is the exercise you want to filter by
+last_exercise = df2[df2["Exercise"] == selected_exercise]
+
+# Get the maximum date
 max_date = pd.to_datetime(last_exercise['Date']).dt.date.max()
 
-# Select all rows where the 'Date' column matches the maximum date
+# Select all rows where the 'Date' column is less than the maximum date
 latest_rows = last_exercise[last_exercise['Date'].dt.date == max_date]
 
-# Print or use the rows with the latest date as needed
 latest_rows[["Weight", "Repetitions"]]
