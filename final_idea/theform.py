@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from pymongo import MongoClient
 from datetime import datetime
+import pytz
 
 connection_string = "mongodb+srv://marcfolchpomares:AstonMartin1@mycluster.e19nlo1.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(connection_string)
@@ -32,7 +33,14 @@ selected_repetitions = st.number_input("Repetitions:", step=1)
 
 collection = db.data
 
-current_datetime = datetime.now()
+now_utc = datetime.utcnow()
+
+# Set the timezone to South Carolina
+sc_timezone = pytz.timezone('America/New_York')
+
+# Localize the current time to South Carolina timezone
+current_datetime = pytz.utc.localize(now_utc).astimezone(sc_timezone)
+
 new_row_data = {"Date":current_datetime, "Bodypart":selected_bodypart, "Exercise":selected_exercise, "Weight":selected_weight, "Repetitions":selected_repetitions, "Score":calculator(selected_weight, selected_repetitions)}
 
 if st.button("Insert"):
