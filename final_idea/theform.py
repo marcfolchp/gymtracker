@@ -33,13 +33,7 @@ selected_repetitions = st.number_input("Repetitions:", step=1)
 
 collection = db.data
 
-now_utc = datetime.now()
-
-# Set the timezone to South Carolina
-sc_timezone = pytz.timezone('America/New_York')
-
-# Localize the current time to South Carolina timezone
-current_datetime = pytz.utc.localize(now_utc).astimezone(sc_timezone)
+now_utc = datetime.now() - timedelta(hours=5)
 
 new_row_data = {"Date":now_utc, "Bodypart":selected_bodypart, "Exercise":selected_exercise, "Weight":selected_weight, "Repetitions":selected_repetitions, "Score":calculator(selected_weight, selected_repetitions)}
 
